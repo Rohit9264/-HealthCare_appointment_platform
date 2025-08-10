@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { assets } from "../assets/assets";
 
 const MyAppointments = () => {
-	const { backendUrl, token } = useContext(AppContext);
+	const { backendUrl, token, userData } = useContext(AppContext);
 	const navigate = useNavigate();
 	// const location = useLocation(); // Not used, so commented out
 	// Share refreshKey with Appointment page via localStorage (simple cross-page solution)
@@ -138,10 +138,13 @@ const MyAppointments = () => {
 		}
 	};
 
-	// Function to redirect to Stripe payment link
+	// Function to redirect to Stripe payment link with dynamic email
 	const appointmentStripe = () => {
-		window.location.href =
-			"https://buy.stripe.com/test_00w14p2T06jB72B6digUM00?prefilled_email=aayush@gmail.com";
+		const email = userData && userData.email ? userData.email : "";
+		const stripeUrl = `https://buy.stripe.com/test_00w14p2T06jB72B6digUM00?prefilled_email=${encodeURIComponent(
+			email
+		)}`;
+		window.location.href = stripeUrl;
 	};
 
 	useEffect(() => {
@@ -200,7 +203,8 @@ const MyAppointments = () => {
 								{!item.cancelled &&
 									!item.payment &&
 									!item.isCompleted &&
-									payment === item._id && (
+									payment === item._id &&
+									(userData && userData.email ? (
 										<button
 											onClick={appointmentStripe}
 											className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center"
@@ -211,7 +215,14 @@ const MyAppointments = () => {
 												alt=""
 											/>
 										</button>
-									)}
+									) : (
+										<button
+											disabled
+											className="text-[#696969] sm:min-w-48 py-2 border rounded bg-gray-200 flex items-center justify-center opacity-60 cursor-not-allowed"
+										>
+											Loading Stripe...
+										</button>
+									))}
 								{!item.cancelled &&
 									!item.payment &&
 									!item.isCompleted &&
