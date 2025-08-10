@@ -138,24 +138,10 @@ const MyAppointments = () => {
 		}
 	};
 
-	// Function to make payment using stripe
-	const appointmentStripe = async (appointmentId) => {
-		try {
-			const { data } = await axios.post(
-				backendUrl + "/api/user/payment-stripe",
-				{ appointmentId },
-				{ headers: { token } }
-			);
-			if (data.success) {
-				const { session_url } = data;
-				window.location.replace(session_url);
-			} else {
-				toast.error(data.message);
-			}
-		} catch (error) {
-			console.log(error);
-			toast.error(error.message);
-		}
+	// Function to redirect to Stripe payment link
+	const appointmentStripe = () => {
+		window.location.href =
+			"https://buy.stripe.com/test_00w14p2T06jB72B6digUM00?prefilled_email=aayush@gmail.com";
 	};
 
 	useEffect(() => {
@@ -216,7 +202,7 @@ const MyAppointments = () => {
 									!item.isCompleted &&
 									payment === item._id && (
 										<button
-											onClick={() => appointmentStripe(item._id)}
+											onClick={appointmentStripe}
 											className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center"
 										>
 											<img
