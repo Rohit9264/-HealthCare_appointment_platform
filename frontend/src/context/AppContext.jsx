@@ -9,7 +9,9 @@ const AppContextProvider = (props) => {
 	const currencySymbol = "₹";
 	//const backendUrl = "https://ski-medical-mern-stack-backend.onrender.com";
 	//const backendUrl = import.meta.env.VITE_BACKEND_URL;
-	const backendUrl = import.meta.env.VITE_BACKEND_URL;
+	//const backendUrl = import.meta.env.VITE_BACKEND_URL;
+	const backendUrl =
+		"https://healthcare-appointment-platform-backend.onrender.com";
 
 	const [doctors, setDoctors] = useState([]);
 	const [token, setToken] = useState(
